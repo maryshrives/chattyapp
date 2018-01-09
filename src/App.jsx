@@ -8,20 +8,10 @@ class App extends Component {
     super(props)
     this.state = {
     currentUser: {name: "Bob"}, // optional. if currentUser is not defined, it means the user is Anonymous
-    messages: [
-        // {
-        //   id: 1,
-        //   username: "Bob",
-        //   content: "Has anyone seen my marbles?",
-        // },
-        // {
-        //   id: 2,
-        //   username: "Anonymous",
-        //   content: "No, I think you lost them. You lost your marbles Bob. You lost them for good."
-        // }
-      ]
+    messages: []
     };
     this.sendMessage = this.sendMessage.bind(this);
+    this.addMessage = this.addMessage.bind(this);
 //    this.onPressEnter = this.onPressEnter.bind(this);
   }
 
@@ -44,6 +34,7 @@ class App extends Component {
     this.socket.onopen = (event) => {
       console.log("Connected to server");
     }
+    this.socket.onmessage = this.addMessage;
   }
 
   // onPressEnter(event) {
@@ -66,6 +57,12 @@ class App extends Component {
 //     this.setState({messages: messages});
 // console.log(messages);
 //   }
+
+  addMessage(rcvdMessage) {
+    let newMessage = JSON.parse(rcvdMessage.data);
+    this.state.messages.push(newMessage);
+    this.setState({messages: this.state.messages});
+  }
 
   //sending message to server
   sendMessage (messageContent) {
