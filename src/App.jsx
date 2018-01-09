@@ -9,20 +9,20 @@ class App extends Component {
     this.state = {
     currentUser: {name: "Bob"}, // optional. if currentUser is not defined, it means the user is Anonymous
     messages: [
-        {
-          id: 1,
-          username: "Bob",
-          content: "Has anyone seen my marbles?",
-        },
-        {
-          id: 2,
-          username: "Anonymous",
-          content: "No, I think you lost them. You lost your marbles Bob. You lost them for good."
-        }
+        // {
+        //   id: 1,
+        //   username: "Bob",
+        //   content: "Has anyone seen my marbles?",
+        // },
+        // {
+        //   id: 2,
+        //   username: "Anonymous",
+        //   content: "No, I think you lost them. You lost your marbles Bob. You lost them for good."
+        // }
       ]
     };
-    this.storeMessage = this.storeMessage.bind(this);
-    this.onPressEnter = this.onPressEnter.bind(this);
+    this.sendMessage = this.sendMessage.bind(this);
+//    this.onPressEnter = this.onPressEnter.bind(this);
   }
 
   //   componentDidMount() {
@@ -46,25 +46,38 @@ class App extends Component {
     }
   }
 
-  onPressEnter(event) {
-    if (event.key === "Enter") {
-      let username = this.state.currentUser.name;
-      let message = event.target.value;
-      console.log("user hit enter");
-      this.storeMessage(username, message);
-      event.target.value = ""; //clears message box after sending
-    }
-  }
+  // onPressEnter(event) {
+  //   if (event.key === "Enter") {
+  //     let username = this.state.currentUser.name;
+  //     let message = event.target.value;
+  //     console.log("user hit enter");
+  //     this.storeMessage(username, message);
+  //     event.target.value = ""; //clears message box after sending
+  //   }
+  // }
 
-  storeMessage(username, message) {
-    const newMessage = {
-      id: this.state.messages.length + 1, //increment the id for each message
+//   storeMessage(username, message) {
+//     const newMessage = {
+//       id: this.state.messages.length + 1, //increment the id for each message
+//       username: username,
+//       content: message
+//     }
+//     const messages = this.state.messages.concat(newMessage)
+//     this.setState({messages: messages});
+// console.log(messages);
+//   }
+
+  //sending message to server
+  sendMessage (messageContent) {
+    let id = this.state.messages.length + 1;
+    let username = this.state.currentUser.name;
+    let content = messageContent;
+    let newMessageAsObject = {
       username: username,
-      content: message
-    }
-    const messages = this.state.messages.concat(newMessage)
-    this.setState({messages: messages});
-console.log(messages);
+      content: content
+    };
+    console.log(newMessageAsObject);
+    this.socket.send(JSON.stringify(newMessageAsObject));
   }
 
   render() {
@@ -75,7 +88,8 @@ console.log(messages);
           <a href="/" className="navbar-brand">Chatty</a>
         </nav>
         <MessageList messages={this.state.messages}/>
-        <ChatBar currentUser={this.state.currentUser.name} onPressEnter={this.onPressEnter}/>
+        <ChatBar currentUser={this.state.currentUser.name}
+          changeHandler={this.sendMessage} socket={this.socket}/>
       </div>
     );
   }
