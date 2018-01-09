@@ -38,12 +38,21 @@ class App extends Component {
   //   }, 3000);
   // }
 
+  componentDidMount() {
+    console.log("componentDidMount <App />");
+    this.socket = new WebSocket("ws://localhost:3001/");
+    this.socket.onopen = (event) => {
+      console.log("Connected to server");
+    }
+  }
+
   onPressEnter(event) {
     if (event.key === "Enter") {
       let username = this.state.currentUser.name;
       let message = event.target.value;
       console.log("user hit enter");
       this.storeMessage(username, message);
+      event.target.value = ""; //clears message box after sending
     }
   }
 
