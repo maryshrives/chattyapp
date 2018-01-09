@@ -3,14 +3,16 @@ import Message from './Message.jsx';
 
 class MessageList extends Component {
   render() {
-    console.log("Rendering MessageList");
+    const message = this.props.messages.map(a => {
+      return (<Message
+        key={ a.id }
+        username={ a.username }
+        content={ a.content } />);
+    })
 
     return (
       <main className="messages">
-        <Message />
-        <div className="message system">
-          Anonymous1 changed their name to Pineapple
-        </div>
+        {message}
       </main>
 
     );
