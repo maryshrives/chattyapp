@@ -8,26 +8,14 @@ class App extends Component {
     super(props)
     this.state = {
     currentUser: {name: ""}, // optional. if currentUser is not defined, it means the user is Anonymous
-    messages: []
+    messages: [],
+    newUser: ""
     };
     this.sendMessage = this.sendMessage.bind(this);
     this.addMessage = this.addMessage.bind(this);
-    this.setUser = this.setUser.bind(this);
+    this.changeUser = this.changeUser.bind(this);
 //    this.onPressEnter = this.onPressEnter.bind(this);
   }
-
-  //   componentDidMount() {
-  //   console.log("componentDidMount <App />");
-  //   setTimeout(() => {
-  //     console.log("Simulating incoming message");
-  //     // Add a new message to the list of messages in the data store
-  //     const newMessage = {id: 3, username: "Michelle", content: "Hello there!"};
-  //     const messages = this.state.messages.concat(newMessage)
-  //     // Update the state of the app component.
-  //     // Calling setState will trigger a call to render() in App and all child components.
-  //     this.setState({messages: messages})
-  //   }, 3000);
-  // }
 
   componentDidMount() {
     console.log("componentDidMount <App />");
@@ -68,12 +56,26 @@ class App extends Component {
   //sending message to server
   sendMessage (event) {
     if(event.key === "Enter"){
+      let newUser = this.state.newUser;
       console.log(this.state.currentUser);
       let username = this.state.currentUser.name;
       let content = event.target.value;
+      let type = "postMessage";
+      if (newUser !== username) { //notification if user changes name
+        let notificationMessage = {
+          username: newUser,
+          content: `${username} has changed their name to ${newUser}`,
+          type: "notification"
+        }
+        console.log(notificationMessage);
+        this.socket.send(JSON.stringify(notificationMessage));
+      }
+      this.setState({currentUser :{ name: this.state.newUser}});
+
       let newMessageAsObject = {
-        username: username,
-        content: content
+        username: newUser,
+        content: content,
+        type: "postMessage"
       };
     console.log(newMessageAsObject);
     this.socket.send(JSON.stringify(newMessageAsObject));
@@ -81,9 +83,9 @@ class App extends Component {
     }
   }
 
-  setUser(event) {
+  changeUser(event) {
     const newUser = event.target.value;
-    this.setState({currentUser: {name: newUser}});
+    this.setState({newUser: newUser});
   }
 
   render() {
@@ -95,7 +97,7 @@ class App extends Component {
         </nav>
         <MessageList messages={this.state.messages}/>
         <ChatBar currentUser={this.state.currentUser.name}
-          sendMessage={this.sendMessage} setUser={this.setUser}/>
+          sendMessage={this.sendMessage} changeUser={this.changeUser}/>
       </div>
     );
   }

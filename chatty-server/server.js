@@ -35,10 +35,16 @@ wss.broadcast = function(data) {
 
 let handleMessage = (incomingMessage) => {
   const receivedMessage = JSON.parse(incomingMessage);
-  console.log('User ' + receivedMessage.username + " said " + receivedMessage.content );
+  console.log('User ' + receivedMessage.username + " said " + receivedMessage.content + " type " + receivedMessage.type);
+//console.log(receivedMessage.content);
 
-receivedMessage.id = uuid.v4();
+//  receivedMessage.type = "incomingMessage";
+  receivedMessage.id = uuid.v4();
   let toSend = JSON.stringify(receivedMessage);
+  if (receivedMessage.type === "postMessage") {
+    receivedMessage.type = "incomingMessage";
+  }
+//  console.log(receivedMessage.type);
   wss.broadcast(toSend);
   console.log(`Sent: ${toSend}`);
 }
