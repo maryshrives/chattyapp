@@ -10,7 +10,7 @@ body {
 }
 
 .chatbar {
-  background: tomato;
+  background: #38c8cc;
   border-top: 1px solid black;
   bottom: 0;
   display: flex;
@@ -28,6 +28,7 @@ body {
   line-height: 40px;
   margin: 5px;
   padding: 0 9px;
+  background-color: #f2ddf2;
 }
 
 .chatbar-message {
@@ -65,7 +66,7 @@ body {
 }
 
 .navbar {
-  background: tomato;
+  background: #38c8cc;
   border-bottom: 1px solid black;
   height: 60px;
   left: 0;
