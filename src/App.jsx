@@ -9,7 +9,8 @@ class App extends Component {
     this.state = {
     currentUser: {name: ""}, // optional. if currentUser is not defined, it means the user is Anonymous
     messages: [],
-    newUser: ""
+    newUser: "",
+    onlineUsers: "1"
     };
     this.sendMessage = this.sendMessage.bind(this);
     this.addMessage = this.addMessage.bind(this);
@@ -49,8 +50,14 @@ class App extends Component {
 
   addMessage(rcvdMessage) {
     let newMessage = JSON.parse(rcvdMessage.data);
-    this.state.messages.push(newMessage);
-    this.setState({messages: this.state.messages});
+    if (newMessage.type === "onlineStatus") {
+      this.setState({onlineUsers: newMessage.content});
+      console.log("Users", this.state.onlineUsers);
+    } else {
+//      console.log("new message1: ", newMessage);
+      this.state.messages.push(newMessage);
+      this.setState({messages: this.state.messages});
+    }
   }
 
   //sending message to server
@@ -89,11 +96,13 @@ class App extends Component {
   }
 
   render() {
+    let statusValue = this.state.onlineUsers;
 
     return (
       <div>
         <nav className="navbar">
           <a href="/" className="navbar-brand">Chatty</a>
+          <span className="chatbar-online">{statusValue}</span>
         </nav>
         <MessageList messages={this.state.messages}/>
         <ChatBar currentUser={this.state.currentUser.name}

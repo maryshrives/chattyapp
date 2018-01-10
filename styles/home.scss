@@ -35,6 +35,12 @@ body {
   flex: 8;
 }
 
+.chatbar-online {
+  float: right;
+  font-weight: bold;
+  line-height: 60px;
+}
+
 .chatbar-username {
   flex: 2;
 }
