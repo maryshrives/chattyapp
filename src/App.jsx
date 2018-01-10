@@ -7,11 +7,12 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-    currentUser: {name: "Bob"}, // optional. if currentUser is not defined, it means the user is Anonymous
+    currentUser: {name: ""}, // optional. if currentUser is not defined, it means the user is Anonymous
     messages: []
     };
     this.sendMessage = this.sendMessage.bind(this);
     this.addMessage = this.addMessage.bind(this);
+    this.setUser = this.setUser.bind(this);
 //    this.onPressEnter = this.onPressEnter.bind(this);
   }
 
@@ -65,16 +66,24 @@ class App extends Component {
   }
 
   //sending message to server
-  sendMessage (messageContent) {
-    let id = this.state.messages.length + 1;
-    let username = this.state.currentUser.name;
-    let content = messageContent;
-    let newMessageAsObject = {
-      username: username,
-      content: content
-    };
+  sendMessage (event) {
+    if(event.key === "Enter"){
+      console.log(this.state.currentUser);
+      let username = this.state.currentUser.name;
+      let content = event.target.value;
+      let newMessageAsObject = {
+        username: username,
+        content: content
+      };
     console.log(newMessageAsObject);
     this.socket.send(JSON.stringify(newMessageAsObject));
+    event.target.value = '';
+    }
+  }
+
+  setUser(event) {
+    const newUser = event.target.value;
+    this.setState({currentUser: {name: newUser}});
   }
 
   render() {
@@ -86,7 +95,7 @@ class App extends Component {
         </nav>
         <MessageList messages={this.state.messages}/>
         <ChatBar currentUser={this.state.currentUser.name}
-          changeHandler={this.sendMessage} socket={this.socket}/>
+          sendMessage={this.sendMessage} setUser={this.setUser}/>
       </div>
     );
   }
