@@ -7,19 +7,18 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-    currentUser: {name: ""}, // optional. if currentUser is not defined, it means the user is Anonymous
+    currentUser: {name: "Anonymous"}, // optional. if currentUser is not defined, it means the user is Anonymous
     messages: [],
-    newUser: "",
+    newUser: "Anonymous",
     onlineUsers: "1"
     };
     this.sendMessage = this.sendMessage.bind(this);
     this.addMessage = this.addMessage.bind(this);
     this.changeUser = this.changeUser.bind(this);
-//    this.onPressEnter = this.onPressEnter.bind(this);
   }
 
   componentDidMount() {
-    console.log("componentDidMount <App />");
+ //   console.log("componentDidMount <App />");
     this.socket = new WebSocket("ws://localhost:3001/");
     this.socket.onopen = (event) => {
       console.log("Connected to server");
@@ -27,40 +26,18 @@ class App extends Component {
     this.socket.onmessage = this.addMessage;
   }
 
-  // onPressEnter(event) {
-  //   if (event.key === "Enter") {
-  //     let username = this.state.currentUser.name;
-  //     let message = event.target.value;
-  //     console.log("user hit enter");
-  //     this.storeMessage(username, message);
-  //     event.target.value = ""; //clears message box after sending
-  //   }
-  // }
-
-//   storeMessage(username, message) {
-//     const newMessage = {
-//       id: this.state.messages.length + 1, //increment the id for each message
-//       username: username,
-//       content: message
-//     }
-//     const messages = this.state.messages.concat(newMessage)
-//     this.setState({messages: messages});
-// console.log(messages);
-//   }
-
   addMessage(rcvdMessage) {
     let newMessage = JSON.parse(rcvdMessage.data);
     if (newMessage.type === "onlineStatus") {
       this.setState({onlineUsers: newMessage.content});
       console.log("Users", this.state.onlineUsers);
     } else {
-//      console.log("new message1: ", newMessage);
       this.state.messages.push(newMessage);
       this.setState({messages: this.state.messages});
     }
   }
 
-  //sending message to server
+  //sending message to server and gives it a type
   sendMessage (event) {
     if(event.key === "Enter"){
       let newUser = this.state.newUser;
@@ -86,7 +63,7 @@ class App extends Component {
       };
     console.log(newMessageAsObject);
     this.socket.send(JSON.stringify(newMessageAsObject));
-    event.target.value = '';
+    event.target.value = ''; //clear the input boxes
     }
   }
 
@@ -112,4 +89,3 @@ class App extends Component {
   }
 }
 export default App;
-console.log("Rendering <App>")
