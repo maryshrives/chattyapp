@@ -1,45 +1,35 @@
-React Boilerplate
-=====================
+# Welcome to Chatty! :speech_balloon:
 
-A minimal and light dev environment for ReactJS.
+This is a simple chat application built using React, WebSockets, and WebPack. Multiple users can connect and chat in real time! All users can see the list of messages in the current conversation and see a notification if a user changes their username.
 
-### Usage
+To get started:
+1. clone the repo
+2. run `npm install` in the root directory
+3. open a second terminal window and cd into the chatty-server directory
+4. run `npm install` again
+5. use the command `npm start` in both terminal windows to get chatting!
 
-Clone the boilerplate and create your own git repo.
+![2 users connected and chatting](https://github.com/maryshrives/chattyapp/blob/master/docs/chattyScreenShot.png)
 
-```
-git clone git@github.com:lighthouse-labs/react-simple-boilerplate.git
-cd react-simple-boilerplate
-git remote rm origin
-git remote add origin [YOUR NEW REPOSITORY]
-# Manually update your package.json file
-```
+## Dependencies
 
-Install the dependencies and start the server.
+-    "react": "15.4.2",
+-    "react-dom": "15.4.2"
+-    "express": "4.16.2"
+-    "uuid": "^3.1.0"
+-    "ws": "4.0.0"
 
-```
-npm install
-npm start
-open http://localhost:3000
-```
+## Dev Dependencies
 
-### Static Files
-
-You can store static files like images, fonts, etc in the `build` folder.
-
-For example, if you copy a file called my_image.png into the build folder you can access it using `http://localhost:3000/build/my_image.png`.
-
-### Linting
-
-This boilerplate project includes React ESLint configuration.
-
-```
-npm run lint
-```
-
-### Dependencies
-
-* React
-* Webpack
-* [babel-loader](https://github.com/babel/babel-loader)
-* [webpack-dev-server](https://github.com/webpack/webpack-dev-server)
+-    "babel-core": "6.23.1"
+-    "babel-loader": "6.3.1"
+-    "babel-preset-es2015": "6.22.0"
+-    "babel-preset-react": "6.23.0"
+-    "babel-preset-stage-0": "6.22.0"
+-    "css-loader": "0.26.1"
+-    "node-sass": "4.5.0"
+-    "sass-loader": "6.0.0"
+-    "sockjs-client": "^1.1.2"
+-    "style-loader": "0.13.1"
+-    "webpack": "2.2.1"
+-    "webpack-dev-server": "2.3.0"
