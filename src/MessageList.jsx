@@ -23,4 +23,4 @@ class MessageList extends Component {
 
 
 export default MessageList;
-console.log("Rendering <MessageList>");
+console.log('Rendering <MessageList>');

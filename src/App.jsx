@@ -7,10 +7,10 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-    currentUser: {name: "Anonymous"}, // optional. if currentUser is not defined, it means the user is Anonymous
+    currentUser: {name: 'Anonymous'}, // optional. if currentUser is not defined, it means the user is Anonymous
     messages: [],
-    newUser: "Anonymous",
-    onlineUsers: "1"
+    newUser: 'Anonymous',
+    onlineUsers: '1'
     };
     this.sendMessage = this.sendMessage.bind(this);
     this.addMessage = this.addMessage.bind(this);
@@ -18,19 +18,18 @@ class App extends Component {
   }
 
   componentDidMount() {
- //   console.log("componentDidMount <App />");
-    this.socket = new WebSocket("ws://localhost:3001/");
+    this.socket = new WebSocket('ws://localhost:3001/');
     this.socket.onopen = (event) => {
-      console.log("Connected to server");
+      console.log('Connected to server');
     }
     this.socket.onmessage = this.addMessage;
   }
 
   addMessage(rcvdMessage) {
     let newMessage = JSON.parse(rcvdMessage.data);
-    if (newMessage.type === "onlineStatus") {
+    if (newMessage.type === 'onlineStatus') {
       this.setState({onlineUsers: newMessage.content});
-      console.log("Users", this.state.onlineUsers);
+      console.log('Users', this.state.onlineUsers);
     } else {
       this.state.messages.push(newMessage);
       this.setState({messages: this.state.messages});
@@ -39,17 +38,16 @@ class App extends Component {
 
   //sending message to server and gives it a type
   sendMessage (event) {
-    if(event.key === "Enter"){
+    if(event.key === 'Enter'){
       let newUser = this.state.newUser;
       console.log(this.state.currentUser);
       let username = this.state.currentUser.name;
       let content = event.target.value;
-      let type = "postMessage";
       if (newUser !== username) { //notification if user changes name
         let notificationMessage = {
           username: newUser,
           content: `${username} has changed their name to ${newUser}`,
-          type: "notification"
+          type: 'notification'
         }
         console.log(notificationMessage);
         this.socket.send(JSON.stringify(notificationMessage));
@@ -59,7 +57,7 @@ class App extends Component {
       let newMessageAsObject = {
         username: newUser,
         content: content,
-        type: "postMessage"
+        type: 'postMessage'
       };
     console.log(newMessageAsObject);
     this.socket.send(JSON.stringify(newMessageAsObject));

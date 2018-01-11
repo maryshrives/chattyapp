@@ -13,4 +13,4 @@ class ChatBar extends Component {
   }
 }
 export default ChatBar;
-console.log("Rendering <ChatBar>")
+console.log('Rendering <ChatBar>')
